@@ -1,5 +1,4 @@
 import subprocess
-import threading
 
 import util
 
@@ -17,10 +16,12 @@ class StreamServer:
         self.cmd += f'dst={self.listen_ip}:{self.port}/{self.stream_name}}}"'
         self.proc = None
 
+    def _kill_ancestor(self):
+        subprocess.run(f"pkill -9 -f '{self.cmd}'", shell=True)
+
     def start(self):
-        self.proc = subprocess.Popen(self.cmd, shell=True)
-        threading.Thread(target=self.proc.communicate, name='StreamServer',
-                         kwargs={'input': self.stdin.read()}).start()
+        self._kill_ancestor()
+        self.proc = subprocess.Popen(self.cmd, shell=True, stdin=self.stdin)
 
     def stop(self):
         self.proc.kill()

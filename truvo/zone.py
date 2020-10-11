@@ -15,3 +15,4 @@ class Zone:
         self.transcoder = Transcoder(stdin=self.shairport_proc.stdout)
         self.transcoder.start()
         self.stream_server = StreamServer(zone_name, zone_instance_id, stdin=self.transcoder.stdout)
+        self.stream_server.start()
