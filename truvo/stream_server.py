@@ -17,7 +17,7 @@ class StreamServer:
         self.proc = None
 
     def _kill_ancestor(self):
-        subprocess.run(f"pkill -9 -f '{self.cmd}'", shell=True)
+        subprocess.run(f"pkill -9 -f '/bin/sh -c {self.cmd}'", shell=True)
 
     def start(self):
         self._kill_ancestor()

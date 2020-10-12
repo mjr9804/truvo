@@ -12,9 +12,9 @@ class Transcoder:
         self.output_kwargs = {'format': kwargs.get('output_format', 'mp3'),
                               'codec': kwargs.get('output_codec', 'mp3')}
         self.cmd = f'ffmpeg -vn -f {self.input_kwargs["format"]} '
-        self.cmd += f'-codec {self.input_kwargs["codec"]} -ac {self.input_kwargs["ac"]}'
-        self.cmd += f'-i {self.input_file} -codec {self.output_kwargs["codec"]}'
-        self.cmd += f'-f {self.output_kwargs["format"]} {self.output_file}'
+        self.cmd += f'-codec {self.input_kwargs["codec"]} -ac {self.input_kwargs["ac"]} '
+        self.cmd += f'-i {self.input_file} -codec {self.output_kwargs["codec"]} '
+        self.cmd += f'-f {self.output_kwargs["format"]} {self.output_file} '
         self.proc = None
 
     def _kill_ancestor(self):
