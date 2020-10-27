@@ -19,10 +19,15 @@ class Shairport:
         config += f'\tname = "{self.zone.name}";\n'
         config += '\toutput_backend = "alsa";\n'
         config += f'\tport = 500{self.zone.number};\n'
+        config += '\tvolume_range_db = 30;\n'
         config += '};\n'
         config += 'sessioncontrol = \n{\n'
         config += f'\trun_this_before_play_begins = "{start_script} {self.zone.id}";\n'
         config += f'\trun_this_after_play_ends = "{stop_script} {self.zone.id}";\n'
+        config += '};\n'
+        config += 'alsa = \n{\n'
+        config += '\toutput_device = "hw:Headphones";\n'
+        config += '\tmixer_control_name = "Headphone";\n'
         config += '};\n'
         return config
 
