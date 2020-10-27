@@ -16,7 +16,17 @@ def discover_device():
 class AudioInputModule:
     def __init__(self):
         self.device = discover_device()
+        if not self.device:
+            raise AttributeError('Unable to find NuVo Audio Input module')
         self.api = self.device.AVTransport
+
+    def _request(self, method, *args, **kwargs):
+        try:
+            method(*args, **kwargs)
+        except Exception as err:
+            logging.warning(f'Failed to send command to Audio Input module ({err}). Retrying...')
+            self.device = discover_device()
+            method(*args, **kwargs)
 
     def set_stream_url(self, url):
         self.api.SetAVTransportURI(InstanceID=0, CurrentURI=url, CurrentURIMetaData='')
@@ -31,14 +41,25 @@ class AudioDistributionModule:
 
     def __init__(self):
         self.server_ip = socket.gethostbyname(AudioDistributionModule.NUVO_AUDIO_DIST_FQDN)
-        self.conn = socket.create_connection((self.server_ip,
-                                              AudioDistributionModule.NUVO_AUDIO_DIST_PORT))
+        self.conn = self._create_conn()
+
+    def _create_conn(self):
+        conn = socket.create_connection((self.server_ip,
+                                         AudioDistributionModule.NUVO_AUDIO_DIST_PORT))
+        return conn
 
     def _request(self, **kwargs):
         payload = kwargs
         payload['ID'] = 1
-        self.conn.send(json.dumps(payload).encode('utf-8') + \
-                       AudioDistributionModule.NUVO_API_TERMINATOR)
+        try:
+            self.conn.send(json.dumps(payload).encode('utf-8') + \
+                        AudioDistributionModule.NUVO_API_TERMINATOR)
+        except Exception as err:
+            logging.warning(f'Failed to send command to Audio Distribution module ({err}). ' + \
+                            'Retrying...')
+            self.conn = self._create_conn()
+            self.conn.send(json.dumps(payload).encode('utf-8') + \
+                           AudioDistributionModule.NUVO_API_TERMINATOR)
 
     def _response(self):
         data = b''
@@ -68,3 +89,6 @@ class AudioDistributionModule:
             logging.debug(traceback.format_exc())
             logging.error(err)
         return zones
+
+    def set_volume(self, zone_id, percent):
+        self._request(Service='SetZoneProperty', ZID=zone_id, PropertyList={'Volume': percent})

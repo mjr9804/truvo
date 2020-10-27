@@ -23,5 +23,14 @@ class Zone:
 
     def play_stream(self, stream_url):
         self.nuvo_input.set_stream_url(stream_url)
+        self.nuvo_audio.set_volume(self.id, 50)
         self.nuvo_input.play()
         self.nuvo_audio.power_on(self.id)
+
+    def power_off(self):
+        self.nuvo_audio.power_off(self.id)
+
+    def kill(self):
+        self.stream_server.stop()
+        self.transcoder.stop()
+        self.shairport.stop()

@@ -15,13 +15,13 @@ class Transcoder:
         self.cmd += f'-codec {self.input_kwargs["codec"]} -ac {self.input_kwargs["ac"]} '
         self.cmd += f'-i {self.input_file} -codec {self.output_kwargs["codec"]} '
         self.cmd += f'-f {self.output_kwargs["format"]} {self.output_file} '
+        self._kill_ancestor()
         self.proc = None
 
     def _kill_ancestor(self):
         subprocess.run(f"pkill -9 -f '{self.cmd}'", shell=True)
 
     def start(self):
-        self._kill_ancestor()
         self.proc = subprocess.Popen(self.cmd, shell=True, stdin=self.stdin, stdout=subprocess.PIPE)
         self.stdout = self.proc.stdout
 
