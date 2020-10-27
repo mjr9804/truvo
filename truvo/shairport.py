@@ -1,8 +1,5 @@
 import os
-import select
 import subprocess
-import threading
-from time import sleep
 
 import util
 

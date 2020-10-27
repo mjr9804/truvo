@@ -1,8 +1,3 @@
-import os
-import select
-from time import sleep
-
-import nuvo
 from shairport import Shairport
 
 class Zone:
