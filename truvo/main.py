@@ -1,9 +1,10 @@
-import subprocess
+import threading
 
 import nuvo
-import util
-from shairport import Shairport
-
+from zone import Zone
 
 if __name__ == '__main__':
-    util.init_zones()
+    nuvo_audio = nuvo.AudioDistributionModule()
+    for zone in nuvo_audio.list_zones():
+        zone_name = zone['Name'].capitalize()
+        threading.Thread(target=Zone, args=(zone_name, zone['ZID']), name=zone_name).start()
