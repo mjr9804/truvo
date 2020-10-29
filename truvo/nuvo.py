@@ -51,6 +51,6 @@ class AudioDistributionModule:
         return zones
 
     def play(self, zone_id):
-        print(f'Playing in {zone_id}')
+        logging.info(f'Playing in {zone_id}')
         self._request(Service='SetZoneProperty', ZID=zone_id,
-                      PropertyList={'Power': True, 'Source': self.analog_source, 'Volume': 25})
+                      PropertyList={'Power': True, 'Source': self.analog_source, 'Volume': 50})

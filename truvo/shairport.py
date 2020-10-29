@@ -26,8 +26,8 @@ class Shairport:
         config += f'\trun_this_after_play_ends = "{stop_script} {self.zone.id}";\n'
         config += '};\n'
         config += 'alsa = \n{\n'
-        config += '\toutput_device = "hw:Headphones";\n'
-        config += '\tmixer_control_name = "Headphone";\n'
+        config += f'\toutput_device = "{self.config["DEFAULT"]["OutputDevice"]}";\n'
+        config += f'\tmixer_control_name = "{self.config["DEFAULT"]["MixerControlName"]}";\n'
         config += '};\n'
         return config
 
