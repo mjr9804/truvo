@@ -1,6 +1,6 @@
 """ Audio zone module """
 
-from shairport import Shairport
+from .shairport import Shairport
 
 class Zone:
     """ Represents an audio zone in the NuVo system """

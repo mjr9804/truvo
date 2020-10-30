@@ -3,7 +3,7 @@
 import os
 import subprocess
 
-import util
+from . import util
 
 class Shairport:
     """ Instance of a shairport-sync process """
@@ -16,8 +16,8 @@ class Shairport:
         self._kill_ancestor()
 
     def _build_config(self):
-        start_script = os.path.join(util.get_cwd(), './shairport_play_hook.py')
-        stop_script = os.path.join(util.get_cwd(), './shairport_stop_hook.py')
+        start_script = os.path.join(util.get_cwd(), '../shairport_play_hook.py')
+        stop_script = os.path.join(util.get_cwd(), '../shairport_stop_hook.py')
         config = 'general = \n{\n'
         config += f'\tname = "{self.zone.name}";\n'
         config += '\toutput_backend = "alsa";\n'

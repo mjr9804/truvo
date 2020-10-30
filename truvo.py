@@ -2,9 +2,8 @@
 
 import threading
 
-import nuvo
-import util
-from zone import Zone
+from truvo import nuvo, util
+from truvo.zone import Zone
 
 if __name__ == '__main__':
     config = util.load_config()

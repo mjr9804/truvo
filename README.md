@@ -45,7 +45,7 @@ In this example, `OutputDevice` would be set to `hw:Device` to use the USB sound
 
 In this example, `MixerControlName` would be set to `Speaker`
 
-3) Run `python3 truvo/main.py`
+3) Run `python3 truvo.py`
 
 ## Usage
 
@@ -56,3 +56,7 @@ Once `truvo` is running, you should see an AirPlay target for each configured zo
 ### Linting
 
 `pylint truvo`
+
+### Testing
+
+`pytest truvo`

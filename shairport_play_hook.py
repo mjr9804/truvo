@@ -4,8 +4,7 @@
 
 import sys
 
-import nuvo
-import util
+from truvo import nuvo, util
 
 def _main(zone_id):
     config = util.load_config()

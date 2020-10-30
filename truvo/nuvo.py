@@ -57,14 +57,13 @@ class AudioDistributionModule:
         Returns:
         list - List of zone data
         """
-        zones = []
         res = self._request(Service='ListZones')
         try:
             return res['ZoneList']
         except Exception as err:
             logging.debug(traceback.format_exc())
             logging.error(err)
-        return zones
+        return []
 
     def play(self, zone_id):
         """
