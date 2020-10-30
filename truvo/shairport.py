@@ -1,9 +1,12 @@
+""" Interact with shairport-sync """
+
 import os
 import subprocess
 
 import util
 
 class Shairport:
+    """ Instance of a shairport-sync process """
     def __init__(self, zone):
         self.zone = zone
         self.config = util.load_config()
@@ -22,8 +25,8 @@ class Shairport:
         config += '\tvolume_range_db = 30;\n'
         config += '};\n'
         config += 'sessioncontrol = \n{\n'
-        config += f'\trun_this_before_play_begins = "{start_script} {self.zone.id}";\n'
-        config += f'\trun_this_after_play_ends = "{stop_script} {self.zone.id}";\n'
+        config += f'\trun_this_before_play_begins = "{start_script} {self.zone.zone_id}";\n'
+        config += f'\trun_this_after_play_ends = "{stop_script} {self.zone.zone_id}";\n'
         config += '};\n'
         config += 'alsa = \n{\n'
         config += f'\toutput_device = "{self.config["DEFAULT"]["OutputDevice"]}";\n'
@@ -32,9 +35,10 @@ class Shairport:
         return config
 
     def _kill_ancestor(self):
-        subprocess.run(f"pkill -9 -f '{self.cmd}'", shell=True)
+        subprocess.run(f"pkill -9 -f '{self.cmd}'", shell=True, check=False)
 
     def start(self):
+        """ Starts the shairport-sync subprocess """
         with open(self.cfg_path, 'w') as cfg_file:
             cfg_file.write(self.config_file)
-        subprocess.run(self.cmd.split(' '))
+        subprocess.run(self.cmd.split(' '), check=True)
